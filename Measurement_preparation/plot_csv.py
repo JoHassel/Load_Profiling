@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 header_rows = 12
-file_link = "Measurement_preparation\\Oszi_data\\20250317_Inrush_Current_AC_Load.csv"
+file_link = "Oszi_data\\20250317_Inrush_Current_AC_Load.csv"
 
 def load_data(file: str):
     df = pd.read_csv(file, skiprows=header_rows, names=['Timestamp1', 'Voltage 1', 'Voltage 2', 'Current', 'Timestamp2', 'MATH'])
