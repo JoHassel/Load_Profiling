@@ -399,5 +399,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-# Other files:
-Measurement_preparation/Oszi_data/20250317_Inrush_Current_AC_Load.csv
+# Other folders/files:
+Measurement_preparation/Oszi_data
