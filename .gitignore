@@ -401,3 +401,5 @@ FodyWeavers.xsd
 
 # Other folders/files:
 Measurement_preparation/Oszi_data
+Measurement_preparation/Load_Selection/Load_survey_data
+Measurement_preparation/Load_Selection/Survey_Analytics.py

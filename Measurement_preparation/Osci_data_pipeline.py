@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 
 def main():
     header_rows = 12
-    dir = "Measurement_preparation\\Oszi_data"
+    dir = ".\\Oszi_data"
     downsample_rate = 10
     avg_size = 50
     call_counter = 0
@@ -20,7 +20,6 @@ def main():
         call_counter +=1
         save_plot_to_html(data, filepath, call_counter, expected_counts)
 
-
 def get_filepaths(dir: str) -> List[str]:
     """
     Gets all filepaths of CSV files in the current directory.
@@ -33,6 +32,7 @@ def get_filepaths(dir: str) -> List[str]:
     """
     all_filepaths = []
     for root, dirs, files in os.walk(dir):
+        print(root)
         for file in files:
             filepath = os.path.join(root, file)
             if os.path.splitext(filepath)[1] == ".csv":
@@ -89,12 +89,16 @@ def save_plot_to_html(data: pd.core.frame.DataFrame, file_link: str, call_counte
     fig.add_trace(go.Scatter(x=data['Timestamp1'], y=data['Current'], name='Current'), secondary_y=False)
     fig.add_trace(go.Scatter(x=data['Timestamp1'], y=data['MATH'], name='Voltage'), secondary_y=True)
 
+    current_axis_limit = max(abs(data['Current'])) * 1.1
+    voltage_axis_limit = max(abs(data['MATH'])) * 1.1
+
     fig.update_layout(
         title = os.path.basename(file_link),
         xaxis_title = "Time in s",
         yaxis_title = "Current in A",
+        yaxis = dict(range=[-current_axis_limit, current_axis_limit]),
         yaxis2_title = "Voltage in V",
-        yaxis2=dict(overlaying='y', side='right')
+        yaxis2 = dict(overlaying='y', side='right', range=[-voltage_axis_limit,voltage_axis_limit])
     )
 
     file_link_new = file_link[:len(file_link)-4] + ".html"
