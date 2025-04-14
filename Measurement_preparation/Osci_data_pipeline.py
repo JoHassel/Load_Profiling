@@ -6,7 +6,7 @@ from plotly.subplots import make_subplots
 
 def main():
     header_rows = 12
-    dir = ".\\Oszi_data"
+    dir = ".\\Osci_data_diff_probe"
     downsample_rate = 10
     avg_size = 50
     call_counter = 0
@@ -32,7 +32,6 @@ def get_filepaths(dir: str) -> List[str]:
     """
     all_filepaths = []
     for root, dirs, files in os.walk(dir):
-        print(root)
         for file in files:
             filepath = os.path.join(root, file)
             if os.path.splitext(filepath)[1] == ".csv":
@@ -53,7 +52,7 @@ def load_data(filepath: str, downsample_rate: int, avg_size:int, header_rows: in
     Returns:
         pd.DataFrame: Downsampled data from CSV file
     """
-    df = pd.read_csv(filepath, skiprows=header_rows, names=['Timestamp1', 'Voltage 1', 'Voltage 2', 'Current', 'Timestamp2', 'MATH'])
+    df = pd.read_csv(filepath, skiprows=header_rows, names=['Timestamp', 'Voltage', 'Current'])
 
     def downsample(df: pd.DataFrame, downsample_rate: int) -> pd.DataFrame:
         """
@@ -86,11 +85,11 @@ def save_plot_to_html(data: pd.core.frame.DataFrame, file_link: str, call_counte
         expected_counts (int): Expected number of function calls
     """
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.add_trace(go.Scatter(x=data['Timestamp1'], y=data['Current'], name='Current'), secondary_y=False)
-    fig.add_trace(go.Scatter(x=data['Timestamp1'], y=data['MATH'], name='Voltage'), secondary_y=True)
+    fig.add_trace(go.Scatter(x=data['Timestamp'], y=data['Current'], name='Current'), secondary_y=False)
+    fig.add_trace(go.Scatter(x=data['Timestamp'], y=data['Voltage'], name='Voltage'), secondary_y=True)
 
     current_axis_limit = max(abs(data['Current'])) * 1.1
-    voltage_axis_limit = max(abs(data['MATH'])) * 1.1
+    voltage_axis_limit = max(abs(data['Voltage'])) * 1.1
 
     fig.update_layout(
         title = os.path.basename(file_link),
